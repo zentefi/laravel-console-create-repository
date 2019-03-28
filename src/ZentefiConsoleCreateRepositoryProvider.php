@@ -1,10 +1,10 @@
 <?php
 
-namespace Zentefi\ConsoleCreateApi;
+namespace Zentefi\ConsoleCreateRepository;
 
 use Illuminate\Support\ServiceProvider;
 
-class ZentefiConsoleCreateApiProvider extends ServiceProvider
+class ZentefiConsoleCreateRepositoryProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -25,7 +25,7 @@ class ZentefiConsoleCreateApiProvider extends ServiceProvider
     {
 		if ($this->app->runningInConsole()) {
 			$this->commands([
-				ApiCreateCommand::class,
+				RepositoryCreateCommand::class,
 			]);
 		}
     }

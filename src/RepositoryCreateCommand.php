@@ -1,24 +1,24 @@
 <?php
 
-namespace Zentefi\ConsoleCreateApi;
+namespace Zentefi/ConsoleCreateRepository;
 
 use Illuminate\Console\Command;
 
-class ApiCreateCommand extends Command
+class RepositoryCreateCommand extends Command
 {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'make:api {className}';
+	protected $signature = 'make:repository {className}';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Create a table api';
+	protected $description = 'Create a table repository';
 
 	protected $_className;
 
@@ -31,7 +31,7 @@ class ApiCreateCommand extends Command
 	public function handle()
 	{
 		$this->_className = $this->argument('className');
-		echo "Api generated\n";
+		echo "Repository generated\n";
 		$this->generateContract();
 		$this->generateImplementation();
 		$this->generateProvider();
@@ -41,11 +41,11 @@ class ApiCreateCommand extends Command
 
 	private function generateContract()
 	{
-		$path = base_path("app/Contracts/Apis/").$this->_className."Api.php";
+		$path = base_path("app/Repositories/Contracts/").$this->_className."Repository.php";
 
 		if(!file_exists($path))
 		{
-			$contents = "<?php namespace App\Contracts\Apis;\n\ninterface ".$this->_className."Api\n{\n\n}\n";
+			$contents = "<?php namespace App\Repositories\Contracts;\n\ninterface ".$this->_className."Repository\n{\n\n}\n";
 			@ mkdir(dirname($path), 0777, true);
 			file_put_contents($path, $contents);
 		}
@@ -53,11 +53,11 @@ class ApiCreateCommand extends Command
 
 	private function generateImplementation()
 	{
-		$path = base_path("app/Domain/Apis/").$this->_className."Api.php";
+		$path = base_path("app/Repositories/Implementations/").$this->_className."RepositoryDatabase.php";
 
 		if(!file_exists($path))
 		{
-			$contents = "<?php namespace App\Domain\Apis;\n\nuse App\Contracts\Apis\\".$this->_className."Api as ".$this->_className."ApiInterface;\n\nclass ".$this->_className."Api implements ".$this->_className."ApiInterface\n{\n\n}\n";
+			$contents = "<?php namespace App\Repositories\Implementations;\n\nuse App\Repositories\Contracts\\".$this->_className."Repository;\n\nclass ".$this->_className."RepositoryDatabase implements ".$this->_className."Repository\n{\n\n}\n";
 			@ mkdir(dirname($path), 0777, true);
 			file_put_contents($path, $contents);
 		}
@@ -72,7 +72,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class {$this->_className}ApiProvider extends ServiceProvider
+class {$this->_className}RepositoryProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -81,7 +81,7 @@ class {$this->_className}ApiProvider extends ServiceProvider
      */
     public function register()
     {
-        \$this->app->singleton(\App\Contracts\Apis\\".$this->_className."Api::class, \App\Domain\Apis\\".$this->_className."Api::class);
+        \$this->app->singleton(\App\Repositories\Contracts\\".$this->_className."Repository::class, \App\Repositories\Implementations\\".$this->_className."RepositoryDatabase::class);
     }
 
     /**
@@ -95,13 +95,13 @@ class {$this->_className}ApiProvider extends ServiceProvider
     }
 }
 ";
-		$path = base_path("app/Providers/{$this->_className}ApiProvider.php");
+		$path = base_path("app/Providers/{$this->_className}RepositoryProvider.php");
 		file_put_contents($path, $provider_code);
 	}
 
 	private function addProviderApp()
 	{
-		$class = "App\\Providers\\".$this->_className."ApiProvider::class";
+		$class = "App\\Providers\\".$this->_className."RepositoryProvider::class";
 
 		$app_path = base_path("config/app.php");
 		$app_content = file_get_contents($app_path);
@@ -111,6 +111,5 @@ class {$this->_className}ApiProvider extends ServiceProvider
 			$app_content = preg_replace("#(?i)(?s)'providers'\s*\=\>\s*\[(.*?)]#", "'providers' => [\n\t\t{$class}, $1] ", $app_content);
 			file_put_contents($app_path, $app_content);
 		}
-
 	}
 }
