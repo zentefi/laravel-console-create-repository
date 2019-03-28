@@ -1,0 +1,20 @@
+{
+    "name": "zentefi/console-create-api",
+    "description": "Create Api (Service Layer) for a given table",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "julito0208",
+            "email": "julito0208@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+      "files": 
+      	[
+			"src/ZentefiConsoleCreateApiProvider.php",
+			"src/ApiCreateCommand.php"
+		]
+    }
+    
+}

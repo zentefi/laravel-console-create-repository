@@ -1,2 +1,2 @@
-# laravel-console-create-repository
-Create Repository
+# laravel-console-create-api
+Create Api (Service Layer) From table
