@@ -1,6 +1,6 @@
 <?php
 
-namespace Zentefi/ConsoleCreateRepository;
+namespace Zentefi\ConsoleCreateRepository;
 
 use Illuminate\Console\Command;
 
